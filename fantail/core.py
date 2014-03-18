@@ -29,6 +29,15 @@ class Fantail(dict):
         else:
             dict.__setitem__(self, key, value)
 
+    def get(self, key, default=None):
+        if isinstance(key, str) and '.' in key:
+            keyA, keyB = key.split('.', 1)
+            if not keyA in self:
+                return default
+            return self[keyA].get(keyB, default)
+        else:
+            return dict.get(self, key, default)
+
     def __getitem__(self, key):
         if isinstance(key, str) and '.' in key:
             keyA, keyB = key.split('.', 1)
