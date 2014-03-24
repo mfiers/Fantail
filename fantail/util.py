@@ -97,7 +97,8 @@ def yaml_string_loader(data):
     """
     Populate a yaco object from a yaml string
     """
-    lg.debug("load string %s", " ".join(data.split())[:50])
+    # lg.debug("load string %s",
+    #         b" ".join(data.split())[:50])
     parsed = yaml.load(data)
     return dict_loader(parsed)
 
@@ -117,9 +118,10 @@ def yaml_file_save(ft_object, filename):
     """
     lg.debug("saving to %s", filename)
     with open(filename, 'w') as F:
-        F.write(yaml.dump(dict(ft_object),
-                          encoding=('ascii'),
-                          default_flow_style=False))
+        d = yaml.dump(dict(ft_object),
+                      encoding=('ascii'),
+                      default_flow_style=False)
+        F.write(d.decode('ascii'))
 
 
 def dir_loader(path):
