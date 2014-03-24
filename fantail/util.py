@@ -2,6 +2,9 @@
 Load a dict from disk & populate a YacoDict
 
 """
+# -*- coding: utf-8 -*-
+
+from __future__ import print_function
 
 import logging
 import os
@@ -15,10 +18,9 @@ yaml.add_representer(Fantail, Representer.represent_dict)
 
 
 lg = logging.getLogger(__name__)
-#lg.setLevel(logging.DEBUG)
+# lg.setLevel(logging.DEBUG)
 
-_demo_object = yaml.load(
-"""
+_demo_object = yaml.load("""
 a:
   b1:
     c1: v1
@@ -28,6 +30,9 @@ a:
 """)
 
 #['pkg://leip/etc/*.config', u'/Users/u0089478/.config/leip/', '/etc/leip/']
+ALLOWED_TXT_EXTENSIONS = """
+txt py pl R sh bash
+""".strip().split()
 
 
 def guess_loader(data):
@@ -79,7 +84,7 @@ def dict_loader(dictionary):
     #lg.debug("load dict %s", " ".join(str(dictionary).split())[:50])
 
     if isinstance(dictionary, str):
-        raise Exception("invalid dictionary: {}".format(
+        raise Exception("invalid dictionary: {0}".format(
             str(dictionary)[:80]))
         exit(-1)
 
@@ -131,7 +136,7 @@ def dir_loader(path):
     rv = Fantail()
 
     if not os.path.isdir(path):
-        raise Exception("Expected a directory: {}".format(path))
+        raise Exception("Expected a directory: {0}".format(path))
         return
 
     for name in os.listdir(path):
@@ -140,9 +145,9 @@ def dir_loader(path):
         if '.' in name:
             basename, file_ext = name.rsplit('.', 1)
 
-
         load_in_root = False
-        if basename[0] == '_':
+
+        if (not basename) or basename[0] == '_':
             load_in_root = True
 
         if os.path.isdir(fullpath):
@@ -150,13 +155,14 @@ def dir_loader(path):
                 rv.update(dir_loader(fullpath))
             else:
                 rv[name] = dir_loader(fullpath)
+
         elif file_ext.lower() in ['yaml', 'conf', 'config']:
             data = yaml_file_loader(fullpath)
             if load_in_root:
                 rv.update(data)
             else:
                 rv[basename].update(data)
-        elif file_ext.lower() == 'txt':
+        elif file_ext.lower() in ['txt', 'py', 'sh', 'bash']:
             with open(fullpath) as F:
                 rv[basename] = F.read()
     return rv
@@ -174,7 +180,7 @@ def package_loader(uri):
     pkg_name, path = uri.split('/', 1)
 
     if not pkg_resources.resource_exists(pkg_name, path):
-        #requested resource does not exist
+        # requested resource does not exist
         return Fantail()
 
     # check if we're looking at a single file in a package -
@@ -196,12 +202,12 @@ def package_loader(uri):
 
         if file_ext in ['yaml', 'conf', 'config']:
             return yaml_string_loader(data)
-        elif file_ext in ['txt']:
+        elif file_ext in ['txt', '']:
             return data
         elif file_ext in ['pickle']:
             return
         else:
-            lg.warning("unknown object in package, ignoring: {}".format(path))
+            lg.warning("unknown object in package, ignoring: {0}".format(path))
         return
 
     # It's a directory
@@ -216,7 +222,7 @@ def package_loader(uri):
             load_in_root = True
 
         if pkg_resources.resource_isdir(pkg_name, new_path):
-            data = package_loader('pkg://{}/{}'.format(pkg_name, new_path))
+            data = package_loader('pkg://{0}/{1}'.format(pkg_name, new_path))
             if load_in_root:
                 rv.update(data)
             else:
@@ -240,15 +246,15 @@ def package_loader(uri):
                 if load_in_root:
                     lg.warning("cannot load txt in root")
                 rv[file_base] = package_loader(
-                    'pkg://{}/{}'.format(pkg_name, new_path))
+                    'pkg://{0}/{1}'.format(pkg_name, new_path))
             elif file_ext in ['yaml', 'conf', 'config']:
                 data = package_loader(
-                    'pkg://{}/{}'.format(pkg_name, new_path))
+                    'pkg://{0}/{1}'.format(pkg_name, new_path))
                 if load_in_root:
                     rv.update(data)
                 else:
                     rv[file_base].update(data)
             else:
-                #ignore
+                # ignore
                 pass
     return rv

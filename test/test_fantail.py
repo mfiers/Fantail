@@ -111,6 +111,9 @@ class LoaderTest(unittest.TestCase):
         self.assertEqual(y['b'], 'v5')
 
     def test_simple_loader_yaml(self):
+
+        lg.critical(str(dir(fantail)))
+        lg.critical(str(fantail.load))
         y = fantail.load(test_dict)
         self.assertEqual(y['a']['b1']['c2'], 'v2')
         self.assertEqual(y['b'], 'v5')

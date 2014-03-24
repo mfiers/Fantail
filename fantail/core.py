@@ -1,6 +1,8 @@
 """
 Fantail
 """
+# -*- coding: utf-8 -*-
+from __future__ import print_function
 
 import collections
 import inspect
@@ -16,7 +18,7 @@ class Fantail(dict):
             elif isinstance(item, dict):
                 self.update(item)
             else:
-                print item, isinstance(item, Fantail)
+                print(item, isinstance(item, Fantail))
                 raise Exception("invalid init argument: {}".format(str(item)))
         self.update(kw)
 
