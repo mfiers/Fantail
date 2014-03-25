@@ -75,4 +75,4 @@ class Fantail(dict):
             for k, v in d.items():
                 self[k] = v
         if len(kwargs):
-            self.data.update(kwargs)
+            self.update(kwargs)
