@@ -80,8 +80,6 @@ class FantailTest(unittest.TestCase):
         y[1] = 12
         self.assertEqual(y[1], 12)
 
-
-
     def test_get(self):
         y = fantail.Fantail()
         y['a'] = 1
@@ -89,8 +87,17 @@ class FantailTest(unittest.TestCase):
         self.assertEqual(y.get('a', 2), 1)
         self.assertEqual(y.get('b', 3), 3)
 
+    def test_branch_nodes(self):
 
+        y = d()
 
+        self.assertTrue(y.has_key('b'))
+        self.assertTrue(y.has_key('c'))
+        self.assertFalse(y.has_key('d'))
+
+        self.assertTrue('b' in y)
+        self.assertTrue('c' in y)
+        self.assertFalse('d' in y)
 
 
 class LoaderTest(unittest.TestCase):
