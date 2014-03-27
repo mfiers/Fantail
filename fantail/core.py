@@ -40,6 +40,17 @@ class Fantail(dict):
         else:
             return dict.get(self, key, default)
 
+
+    def __contains__(self, key):
+        return self.has_key(key)
+
+    def has_key(self, key):
+        if not '.' in key:
+            return super(Fantail, self).has_key(key)
+
+        keyA, keyB = key.split('.', 1)
+        return self[keyA].has_key(keyB)
+
     def __getitem__(self, key):
         if isinstance(key, str) and '.' in key:
             keyA, keyB = key.split('.', 1)
