@@ -9,6 +9,7 @@ from __future__ import print_function
 import logging
 import os
 import pkg_resources
+import sys
 
 from fantail.core import Fantail
 
@@ -16,6 +17,8 @@ import yaml
 from yaml.representer import Representer
 yaml.add_representer(Fantail, Representer.represent_dict)
 
+
+PY3 = sys.version_info[0] > 2
 
 lg = logging.getLogger(__name__)
 # lg.setLevel(logging.DEBUG)
@@ -201,6 +204,10 @@ def package_loader(uri):
             file_base, file_ext = filename, ''
 
         data = pkg_resources.resource_string(pkg_name, path)
+
+        if PY3:
+            if isinstance(data, bytes):
+                data = data.decode('ascii')
 
         if file_ext in ['yaml', 'conf', 'config']:
             return yaml_string_loader(data)

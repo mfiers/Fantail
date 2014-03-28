@@ -17,11 +17,13 @@ test_set_1 = {
     'c': {'d': 3,
           'e': 4,
           'f': 5},
-    'g': [0, 1, 2, 3,
-          {'h': 6,
-           'i': 7,
-           'j': 8,
-           }]}
+    'g': [0, 1, 2, 3,],
+    'h': { 'i' : 12,
+           'j' : {'k' : 14,
+                  'l' : 15,
+                  'm' : 16}
+         }
+    }
 
 test_set_2 = {
     'a': 18,
@@ -98,6 +100,13 @@ class FantailTest(unittest.TestCase):
         self.assertTrue('b' in y)
         self.assertTrue('c' in y)
         self.assertFalse('d' in y)
+
+        self.assertTrue(y.has_key('h.j.k'))
+        self.assertTrue(y.has_key('h.j'))
+        self.assertFalse(y.has_key('h.j.qq'))
+
+        from pprint import pprint
+        pprint(y)
 
 
 class LoaderTest(unittest.TestCase):
