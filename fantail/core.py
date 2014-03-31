@@ -42,14 +42,14 @@ class Fantail(dict):
 
 
     def __contains__(self, key):
-        return self.has_key(key)
-
-    def has_key(self, key):
         if not '.' in key:
-            return super(Fantail, self).has_key(key)
+            return super(Fantail, self).__contains__(key)
 
         keyA, keyB = key.split('.', 1)
-        return self[keyA].has_key(keyB)
+        return keyB in self[keyA]
+
+    def has_key(self, key):
+        return self.__contains__(key)
 
     def __getitem__(self, key):
         if isinstance(key, str) and '.' in key:
