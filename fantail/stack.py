@@ -4,22 +4,68 @@ Fantail
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+from copy import copy
+
+def merger(a, b):
+
+    if a is None:
+        return copy(b)
+
+    if b is None:
+        return copy(a)
+
+    # if not type(a) == type(b):
+    #     print(a, b)
+    #     print(type(a))
+    #     print(type(b))
+
+    if isinstance(a, dict) and isinstance(b, dict):
+        a = copy(a)
+        a.update(b)
+
+    if isinstance(a, list) and isinstance(b, list):
+        a = copy(a)
+        for item in b:
+            if not item in a:
+                a.append(item)
+        return a
+
+    #not updateable - return the first version
+    return a
+
 
 
 class Fanstack(object):
 
-    def __init__(self, stack=None):
+    def __init__(self, stack=None, mode='merge'):
 
+        #how to deal with mergeable objects.
+        #mode = merge -> attempt to merge
+        #       top -> return first object seen
+        #
+
+        self.mode = mode
         if stack is None:
             self.stack = []
         else:
             self.stack = stack
 
+
     def __getitem__(self, key):
+
+        rv = None
+
         for s in self.stack:
             if key in s:
-                return s[key]
-        raise KeyError(key)
+                if self.mode == 'top':
+                    return s[key]
+                elif self.mode == 'merge':
+                    rv = merger(rv, s[key])
+
+        if rv is None:
+            raise KeyError(key)
+
+        return rv
 
     def __setitem__(self, key, value):
         self.stack[0].__setitem__(key, value)
