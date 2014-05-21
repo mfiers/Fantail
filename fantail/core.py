@@ -79,6 +79,17 @@ class Fantail(dict):
         return type(self)(Fantail,
                           copy.deepcopy(self.items()))
 
+    def backfill(self, d=None):
+        """
+        as update - but use only values that do not exists
+        """
+        if d is None:
+            return
+        for k, v in d.items():
+            if not k in self:
+                self[k] = v
+
+
     def update(self, d=None, **kwargs):
         if d is None:
             pass
