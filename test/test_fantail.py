@@ -106,8 +106,31 @@ class FantailTest(unittest.TestCase):
         self.assertFalse(y.has_key('h.j.qq'))
 
         from pprint import pprint
-        pprint(y)
+        #pprint(y)
 
+
+class StackTest(unittest.TestCase):
+
+    def setUp(self):
+        self.a = fantail.Fantail()
+        self.b = fantail.Fantail()
+        self.s = fantail.Fanstack([self.a,self.b])
+
+        self.a['a.b.c'] = 1
+        self.a['a.b.d'] = 2
+        self.b['a.b.e'] = 3
+
+    def test_basic(self):
+        #print list(self.s.keys())
+
+        self.assertEqual(self.s['a.b.c'], 1)
+        self.assertEqual(self.s['a.b.d'], 2)
+        self.assertEqual(self.s['a.b.e'], 3)
+
+    def test_slice(self):
+
+        s = self.s['a.b']
+        #print(s)
 
 class LoaderTest(unittest.TestCase):
 
