@@ -29,7 +29,7 @@ class Tox(TestCommand):
 DESCRIPTION = "Yaml based application configuration"
 
 setup(name='fantail',
-      version='0.0.7',
+      version='0.0.8',
       description=DESCRIPTION,
       author='Mark Fiers',
       author_email='mark.fiers42@gmail.com',
