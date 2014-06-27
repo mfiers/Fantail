@@ -53,7 +53,7 @@ class Fanstack(object):
 
     def __getitem__(self, key):
 
-        rv = None
+        rv = "____no_value____"
 
         for s in self.stack:
             if key in s:
@@ -62,7 +62,7 @@ class Fanstack(object):
                 elif self.mode == 'merge':
                     rv = merger(rv, s[key])
 
-        if rv is None:
+        if rv == "____no_value____":
             raise KeyError(key)
 
         return rv
