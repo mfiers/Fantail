@@ -8,10 +8,10 @@ from copy import copy
 
 def merger(a, b):
 
-    if a is None:
+    if a is "____no_value____":
         return copy(b)
 
-    if b is None:
+    if b is "____no_value____":
         return copy(a)
 
     # if not type(a) == type(b):
