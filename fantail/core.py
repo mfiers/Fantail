@@ -98,3 +98,24 @@ class Fantail(dict):
                 self[k] = v
         if len(kwargs):
             self.update(kwargs)
+
+
+    def pretty(self):
+        """
+        Return a formatted string representation
+        """
+
+        # d = Fantail()
+        # for s in self.stack[::-1]:
+        #     d.update(s)
+        #
+        # if 'hash' in d:
+        #     del d['hash']
+
+        def unicode_representer(dumper, uni):
+            node = yaml.ScalarNode(tag=u'tag:yaml.org,2002:str', value=uni)
+            return node
+
+        yaml.add_representer(unicode, unicode_representer)
+
+        return yaml.dump(self, default_flow_style=False)
