@@ -6,6 +6,16 @@ Fantail
 from __future__ import print_function
 from copy import copy
 
+import yaml
+
+from fantail import Fantail
+
+
+
+# def yaml_represent_fantail(dumper, data):
+#    return dumper.represent_mapping(u'tag:yaml.org,2002:map', dict(data))
+
+
 def merger(a, b):
 
     if a is "____no_value____":
@@ -98,3 +108,23 @@ class Fanstack(object):
             self.stack[0].update(d)
         if len(kwargs):
             self.stack[0].update(kwargs)
+
+    def pretty(self):
+        """
+        Return a formatted string representation
+
+        Note - this does not deal with mergeable objects (yet)
+        """
+        d = Fantail()
+        for s in self.stack[::-1]:
+            d.update(s)
+        if 'hash' in d:
+            del d['hash']
+
+        def unicode_representer(dumper, uni):
+            node = yaml.ScalarNode(tag=u'tag:yaml.org,2002:str', value=uni)
+            return node
+
+        yaml.add_representer(unicode, unicode_representer)
+        
+        return yaml.dump(d, default_flow_style=False)
