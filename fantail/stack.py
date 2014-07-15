@@ -126,5 +126,5 @@ class Fanstack(object):
             return node
 
         yaml.add_representer(unicode, unicode_representer)
-        
+
         return yaml.dump(d, default_flow_style=False)

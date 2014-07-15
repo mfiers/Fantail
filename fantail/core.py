@@ -7,6 +7,8 @@ from __future__ import print_function
 import collections
 import inspect
 
+import yaml
+
 
 class Fantail(dict):
     def __init__(self, *a, **kw):
