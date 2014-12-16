@@ -11,6 +11,7 @@ import yaml
 
 
 class Fantail(dict):
+
     def __init__(self, *a, **kw):
         dict.__init__(self)
 
@@ -30,6 +31,9 @@ class Fantail(dict):
             self[keyA][keyB] = value
         elif isinstance(value, dict) and len(value) > 0:
             self[key].update(value)
+        elif isinstance(value, dict):
+            #print('#EEE', key)
+            dict.__setitem__(self, key, Fantail())
         else:
             dict.__setitem__(self, key, value)
 
@@ -56,11 +60,12 @@ class Fantail(dict):
     def __getitem__(self, key):
         if isinstance(key, str) and '.' in key:
             keyA, keyB = key.split('.', 1)
-            return self[keyA][keyB]
-
+            containerA = self[keyA]
+            return containerA[keyB]
         try:
             return dict.__getitem__(self, key)
         except KeyError:
+            print ("####", key)
             return self.__missing__(key)
 
     def __missing__(self, key):
