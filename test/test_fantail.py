@@ -11,31 +11,34 @@ import fantail
 lg = logging.getLogger(__name__)
 lg.setLevel(logging.DEBUG)
 
-test_set_1 = {
-    'a': 1,
-    'b': 2,
-    'c': {'d': 3,
-          'e': 4,
-          'f': 5},
-    'g': [0, 1, 2, 3,],
-    'h': { 'i' : 12,
-           'j' : {'k' : 14,
-                  'l' : 15,
-                  'm' : 16}
-         }
-    }
+test_set_1 = yaml.load("""
+a: 1
+b: 2
+c:
+  d: 3
+  e: 4
+  f: 5
+g: [0, 1, 2, 3,]
+h: 
+  i: 12
+  j:
+    k: 14
+    l: 15
+    m: 16
+""")
 
-test_set_2 = {
-    'a': 18,
-    'b': {'k': 9,
-          'm': 10
-          },
-    'g': [0, 1, 2, 3, 4, 5]
-}
+test_set_2 = yaml.load("""
+a: 18
+b:
+  k: 9
+  m: 10
+g: [0, 1, 2, 3, 4, 5]
+""")
 
 
 def d():
     return fantail.Fantail(test_set_1)
+
 
 class BasicFantailTest(unittest.TestCase):
 
@@ -61,7 +64,6 @@ test_dict = yaml.load(test_yaml)
 
 class FantailTest(unittest.TestCase):
 
-
     def test_load(self):
         y = fantail.Fantail()
 
@@ -82,17 +84,16 @@ class FantailTest(unittest.TestCase):
         y[1] = 12
         self.assertEqual(y[1], 12)
 
+        
     def test_get(self):
         y = fantail.Fantail()
         y['a'] = 1
         self.assertEqual(y.get('a'), 1)
         self.assertEqual(y.get('a', 2), 1)
         self.assertEqual(y.get('b', 3), 3)
-
+        
     def test_branch_nodes(self):
-
         y = d()
-
         self.assertTrue(y.has_key('b'))
         self.assertTrue(y.has_key('c'))
         self.assertFalse(y.has_key('d'))
@@ -104,9 +105,6 @@ class FantailTest(unittest.TestCase):
         self.assertTrue(y.has_key('h.j.k'))
         self.assertTrue(y.has_key('h.j'))
         self.assertFalse(y.has_key('h.j.qq'))
-
-        from pprint import pprint
-        #pprint(y)
 
 
 class StackTest(unittest.TestCase):
@@ -120,17 +118,20 @@ class StackTest(unittest.TestCase):
         self.a['a.b.d'] = 2
         self.b['a.b.e'] = 3
 
-    def test_basic(self):
-        #print list(self.s.keys())
-
+    def test_basic(self):        
         self.assertEqual(self.s['a.b.c'], 1)
         self.assertEqual(self.s['a.b.d'], 2)
         self.assertEqual(self.s['a.b.e'], 3)
 
     def test_slice(self):
-
         s = self.s['a.b']
-        #print(s)
+        self.assertEqual(s, dict(d=2,e=3,c=1))
+
+    def test_in(self):
+        self.assertTrue('a.b' in self.s)
+
+    def test_slice_in(self):
+        self.assertTrue('b' in self.s['a'])
 
 class LoaderTest(unittest.TestCase):
 

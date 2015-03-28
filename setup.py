@@ -9,11 +9,6 @@ import sys
 
 from distutils.core import setup
 
-extra = {}
-if sys.version_info >= (3,):
-    extra['use_2to3'] = True
-
-
 class Tox(TestCommand):
 
     def finalize_options(self):
@@ -43,12 +38,8 @@ setup(name='fantail',
           'Development Status :: 5 - Production/Stable',
           'Intended Audience :: Developers',
           'Operating System :: OS Independent',
-          'Programming Language :: Python :: 2',
-          'Programming Language :: Python :: 2.6',
-          'Programming Language :: Python :: 2.7',
-          #'Programming Language :: Python :: 3',
-          #'Programming Language :: Python :: 3.2',
-          #'Programming Language :: Python :: 3.3',
-      ],
-      **extra
+          'Programming Language :: Python :: 3',
+          'Programming Language :: Python :: 3.3',
+          'Programming Language :: Python :: 3.4',
+      ]
       )

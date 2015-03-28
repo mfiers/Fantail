@@ -86,12 +86,6 @@ class Fanstack(object):
                 return s[key]
         return default
 
-    def has_key(self, key):
-        for s in self.stack:
-            if key in s:
-                return True
-        return False
-
     def keys(self):
         k = set()
         for s in self.stack:
@@ -99,7 +93,10 @@ class Fanstack(object):
         return iter(list(k))
 
     def __contains__(self, key):
-        return self.has_key(key)
+        for s in self.stack:
+            if key in s:
+                return True
+        return False
 
     def update(self, d=None, **kwargs):
         if d is None:
