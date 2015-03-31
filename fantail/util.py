@@ -41,7 +41,7 @@ txt py pl R sh bash
 def guess_loader(data):
     if isinstance(data, dict):
         return dict_loader
-    elif not isinstance(data, basestring):
+    elif not isinstance(data, str):
         raise Exception("Invalid data type {0} ({1}".format(
             str(data)[:50], type(data)))
     elif os.path.isdir(data):
