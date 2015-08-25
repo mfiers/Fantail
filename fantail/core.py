@@ -72,6 +72,9 @@ class Fantail(dict):
         self[key] = Fantail()
         return self[key]
 
+    def __repr__(self):
+        return str(dict(self))
+
     def __reduce__(self):
         return type(self), (Fantail, ), None, None, iter(self.items())
 
