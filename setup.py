@@ -10,8 +10,8 @@ import sys
 from distutils.core import setup
 
 extra = {}
-if sys.version_info >= (3,):
-    extra['use_2to3'] = True
+#if sys.version_info >= (3,):
+#    extra['use_2to3'] = True
 
 
 class Tox(TestCommand):
