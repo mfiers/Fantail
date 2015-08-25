@@ -24,7 +24,7 @@ class Tox(TestCommand):
 DESCRIPTION = "Yaml based application configuration"
 
 setup(name='fantail',
-      version='0.1.1',
+      version='0.2',
       description=DESCRIPTION,
       author='Mark Fiers',
       author_email='mark.fiers42@gmail.com',
@@ -38,8 +38,6 @@ setup(name='fantail',
           'Development Status :: 5 - Production/Stable',
           'Intended Audience :: Developers',
           'Operating System :: OS Independent',
-          'Programming Language :: Python :: 2',
-          'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',
           'Programming Language :: Python :: 3.3',
           'Programming Language :: Python :: 3.4',
