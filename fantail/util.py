@@ -15,6 +15,19 @@ from fantail.core import Fantail
 
 import yaml
 from yaml.representer import Representer
+
+class literal_str(str):
+    pass
+
+class literal_unicode(str):
+    pass
+
+def literal_str_representer(dumper, data):
+    return dumper.represent_scalar(u'tag:yaml.org,2002:str', data, style='|')
+        
+#yaml.add_representer(literal_unicode, literal_unicode_representer)
+yaml.add_representer(literal_str, literal_str_representer)
+
 yaml.add_representer(Fantail, Representer.represent_dict)
 
 
