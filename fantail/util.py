@@ -11,9 +11,11 @@ import os
 import pkg_resources
 import sys
 
+import requests
 from fantail.core import Fantail
 
 import yaml
+
 from yaml.representer import Representer
 
 class literal_str(str):
@@ -57,6 +59,10 @@ def guess_loader(data):
     elif not isinstance(data, str):
         raise Exception("Invalid data type {0} ({1}".format(
             str(data)[:50], type(data)))
+    elif data.startswith('http://'):
+        return request_loader
+    elif data.startswith('https://'):
+        return request_loader
     elif os.path.isdir(data):
         return dir_loader
     elif data[:6] == 'pkg://':
@@ -92,7 +98,7 @@ def load(data):
     """
     return guess_loader(data)(data)
 
-
+    
 def dict_loader(dictionary):
     """
     Populate a yaco object from a dictionary
@@ -107,6 +113,11 @@ def dict_loader(dictionary):
     rv = Fantail()
     rv.update(dictionary)
     return rv
+
+
+def request_loader(path):
+    raw = requests.get(path).text
+    return yaml.load(raw)
 
 
 def yaml_string_loader(data):

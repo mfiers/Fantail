@@ -24,14 +24,17 @@ class Tox(TestCommand):
 DESCRIPTION = "Yaml based application configuration"
 
 setup(name='fantail',
-      version='0.2.3',
+      version='0.2.5',
       description=DESCRIPTION,
       author='Mark Fiers',
       author_email='mark.fiers42@gmail.com',
       url='https://github.com/mfiers/Fantail',
       include_package_data=True,
       packages=['fantail'],
-      install_requires=['PyYAML>=3.0'],
+      install_requires=[
+          'PyYAML>=3.0',
+          'requests'
+          ],
       tests_require=['tox', 'PyYAML>=3.0'],
       cmdclass={'test': Tox},
       classifiers=[
